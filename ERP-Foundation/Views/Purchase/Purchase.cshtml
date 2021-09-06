@@ -1,0 +1,75 @@
+﻿
+<div id="app" class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow px-4 py-4">
+            <form>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">單號</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Add Dialog-->
+    <div class="modal fade" id="AddModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">新增商品分類作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>商品分類名稱</label>
+                        <input class="form-control" v-model="addForm.name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>排序</label>
+                        <input class="form-control" v-model="addForm.order" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="addData">
+                        <i class="bi bi-save"></i>&nbsp;新增
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Dialog-->
+    <div class="modal fade" id="EditModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">編輯商品分類作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>商品分類名稱</label>
+                        <input class="form-control" v-model="editForm.name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>排序</label>
+                        <input class="form-control" v-model="editForm.order" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="editData">
+                        <i class="bi bi-save"></i>&nbsp;儲存
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

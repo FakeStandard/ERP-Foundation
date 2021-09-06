@@ -1,0 +1,284 @@
+﻿
+<div id="productApp" class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow px-4 py-4">
+            <div class="row justify-content-between">
+                <div class="col">
+                    <button class="btn btn-outline-primary shadow" @@click="showAddDialogClick">
+                        <i class="bi bi-plus-lg"></i>&nbsp;新增商品
+                    </button>
+                    <button class="btn btn-outline-success shadow" @@click="showUploadFileDialogClick">
+                        <i class="bi bi-upload"></i>&nbsp;批次上傳
+                    </button>
+                </div>
+                <div class="d-flex col-lg-4 col-md-6 col-sm-8 col-xs-12">
+                    <input class="form-control me-2 shadow" type="search" placeholder="Search" aria-label="Search" v-model="searchText" @@keyup.enter="searchClick">
+                    <button class="btn btn-outline-secondary shadow" @@click="searchClick">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <p class="pt-2">
+                    <button class="btn btn-outline-dark btn-sm" v-show="!NAME" @@click="NAME=!NAME">
+                        品名
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!CATEGORY" @@click="CATEGORY=!CATEGORY">
+                        分類
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!PRICE" @@click="PRICE=!PRICE">
+                        價格
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!IMAGE" @@click="IMAGE=!IMAGE">
+                        照片
+                    </button>
+                </p>
+            </div>
+            <div class="pt-2">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th v-show="NAME">
+                                品名
+                                <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==null">
+                                    <i class="fa fa-sort"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==false">
+                                    <i class="bi bi-sort-down-alt"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==true">
+                                    <i class="bi bi-sort-down"></i>
+                                </a>
+                                <a href="#?" class="link-secondary float-end" v-on:click="NAME=!NAME">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="CATEGORY">
+                                分類
+                                <a href="#?" class="link-secondary" @@click="filterSort('CATEGORY')" v-show="sortCATEGORY==null">
+                                    <i class="fa fa-sort"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('CATEGORY')" v-show="sortCATEGORY==false">
+                                    <i class="bi bi-sort-down-alt"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('CATEGORY')" v-show="sortCATEGORY==true">
+                                    <i class="bi bi-sort-down"></i>
+                                </a>
+                                <a href="#?" class="link-secondary float-end" v-on:click="CATEGORY=!CATEGORY">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="PRICE">
+                                價格
+                                <a href="#?" class="link-secondary" @@click="filterSort('PRICE')" v-show="sortPRICE==null">
+                                    <i class="fa fa-sort"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('PRICE')" v-show="sortPRICE==false">
+                                    <i class="bi bi-sort-down-alt"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('PRICE')" v-show="sortPRICE==true">
+                                    <i class="bi bi-sort-down"></i>
+                                </a>
+                                <a href="#?" class="link-secondary float-end" v-on:click="PRICE=!PRICE">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="IMAGE">
+                                照片
+                                <a href="#?" class="link-secondary" @@click="filterSort('IMAGE')" v-show="sortIMAGE==null">
+                                    <i class="fa fa-sort"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('IMAGE')" v-show="sortIMAGE==false">
+                                    <i class="bi bi-sort-down-alt"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('IMAGE')" v-show="sortIMAGE==true">
+                                    <i class="bi bi-sort-down"></i>
+                                </a>
+                                <a href="#?" class="link-secondary float-end" v-on:click="IMAGE=!IMAGE">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in list">
+                            <td>{{index+1}}</td>
+                            <td v-show="NAME">{{item.name}}</td>
+                            <td v-show="CATEGORY">{{item.category}}</td>
+                            <td v-show="PRICE">{{item.price}}</td>
+                            <td v-show="IMAGE">
+                                <img :src="item.path" width="150" />
+                            </td>
+                            <td style="max-width:150px;text-align:center;">
+                                <button class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="照片上傳" @@click="showUploadImageDialogClick(item.id, item.name)">
+                                    <i class="bi bi-images"></i>
+                                </button>
+                                <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="編輯" @@click="showEditDialogClick(item)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="刪除" @@click="deleteDataClick(item.id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="loading">
+                        <tr>
+                            <td colspan="6" style="text-align:center">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border spinner-border-sm text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="!loading && list.length==0">
+                        <tr>
+                            <td colspan="5" style="text-align:center">目前尚無資料</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Add Dialog-->
+    <div class="modal fade" id="AddProductModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">新增商品作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>品名</label>
+                        <input class="form-control" v-model="addForm.name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>分類</label>
+                        <select class="form-select" v-model="addForm.category">
+                            <option v-for="item in categoryItem" :value="item.key">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>價格</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" v-model="addForm.price" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="addData">
+                        <i class="bi bi-save"></i>&nbsp;新增
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Dialog-->
+    <div class="modal fade" id="EditProductModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">編輯商品作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>品名</label>
+                        <input class="form-control" v-model="editForm.name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>分類</label>
+                        <select class="form-select" v-model="editForm.category">
+                            <option v-for="item in categoryItem" :value="item.key">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>價格</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" v-model="editForm.price" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="editData">
+                        <i class="bi bi-save"></i>&nbsp;儲存
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Upload Data Dialog-->
+    <div class="modal fade" id="UploadProductModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">批次上傳商品作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input class="form-control" type="file" id="uploadDataFile" @@change="uploadDataChange">
+                    </div>
+                    <div class="mb-3">
+                        <span id="fileErrMsg" style="color:red;font-weight:bolder"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnUploadData" @@click="uploadData" disabled>
+                        <i class="bi bi-cloud-arrow-up"></i>&nbsp;確定上傳
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Upload Image Dialog-->
+    <div class="modal fade" id="UploadImageModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">上傳圖片作業 - {{uploadName}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input class="form-control" href="updata" type="file" id="uploadImageFile" @@change="uploadImageChange">
+                    </div>
+                    <div class="mb-3">
+                        <span id="imageErrMsg" style="color:red;font-weight:bolder"></span>
+                    </div>
+                    <div class="mb-3">
+                        <img id="displayImg" height="200" style="display:none" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnUploadImage" @@click="uploadImage" disabled>
+                        <i class="bi bi-cloud-arrow-up"></i>&nbsp;確定上傳
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

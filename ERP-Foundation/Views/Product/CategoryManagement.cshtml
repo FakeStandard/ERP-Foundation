@@ -1,0 +1,161 @@
+﻿
+<div id="app" class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow px-4 py-4">
+            <div class="row justify-content-between">
+                <div class="col">
+                    <button class="btn btn-outline-primary shadow" @@click="showAddDialogClick">
+                        <i class="bi bi-plus-lg"></i>&nbsp;新增分類
+                    </button>
+                </div>
+                <div class="d-flex col-lg-4 col-md-6 col-sm-8 col-xs-12">
+                    <input class="form-control me-2 shadow" type="search" placeholder="Search" aria-label="Search" v-model="searchText" @@keyup.enter="searchClick">
+                    <button class="btn btn-outline-secondary shadow" @@click="searchClick">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <p class="pt-2">
+                    <button class="btn btn-outline-dark btn-sm" v-show="!NAME" @@click="NAME=!NAME">
+                        商品分類
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!ORDER" @@click="ORDER=!ORDER">
+                        排序
+                    </button>
+                </p>
+            </div>
+            <div class="pt-2">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th v-show="NAME">
+                                商品分類
+                                <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==null">
+                                    <i class="fa fa-sort"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==false">
+                                    <i class="bi bi-sort-down-alt"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==true">
+                                    <i class="bi bi-sort-down"></i>
+                                </a>
+                                <a href="#?" class="link-secondary float-end" v-on:click="NAME=!NAME">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="ORDER">
+                                排序
+                                <a href="#?" class="link-secondary" @@click="filterSort('ORDER')" v-show="sortORDER==null">
+                                    <i class="fa fa-sort"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('ORDER')" v-show="sortORDER==false">
+                                    <i class="bi bi-sort-down-alt"></i>
+                                </a>
+                                <a href="#?" class="link-secondary" @@click="filterSort('ORDER')" v-show="sortORDER==true">
+                                    <i class="bi bi-sort-down"></i>
+                                </a>
+                                <a href="#?" class="link-secondary float-end" v-on:click="ORDER=!ORDER">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in list">
+                            <td>{{index+1}}</td>
+                            <td v-show="NAME">{{ item.name }}</td>
+                            <td v-show="ORDER">{{ item.order }}</td>
+                            <td style="max-width:100px;text-align:center">
+                                <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="編輯" @@click="showEditDialogClick(item)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="刪除" @@click="deleteDataClick(item.id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="loading">
+                        <tr>
+                            <td colspan="3" style="text-align:center">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border spinner-border-sm text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="!loading && list.length==0">
+                        <tr>
+                            <td colspan="3" style="text-align:center">目前尚無資料</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Add Dialog-->
+    <div class="modal fade" id="AddModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">新增商品分類作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>商品分類名稱</label>
+                        <input class="form-control" v-model="addForm.name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>排序</label>
+                        <input class="form-control" v-model="addForm.order" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="addData">
+                        <i class="bi bi-save"></i>&nbsp;新增
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Dialog-->
+    <div class="modal fade" id="EditModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">編輯商品分類作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>商品分類名稱</label>
+                        <input class="form-control" v-model="editForm.name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>排序</label>
+                        <input class="form-control" v-model="editForm.order" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="editData">
+                        <i class="bi bi-save"></i>&nbsp;儲存
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

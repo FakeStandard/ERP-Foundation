@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "進貨";
+}
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-purchase-tab" data-bs-toggle="tab" data-bs-target="#nav-purchase" type="button" role="tab" aria-controls="nav-purchase" aria-selected="true">進貨</button>
+        <button class="nav-link" id="nav-purchase-return-tab" data-bs-toggle="tab" data-bs-target="#nav-purchase-return" type="button" role="tab" aria-controls="nav-purchase-return" aria-selected="false">進貨退回</button>
+        <button class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" data-bs-target="#nav-detail" type="button" role="tab" aria-controls="nav-detail" aria-selected="false">進退貨明細表</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-purchase" role="tabpanel" aria-labelledby="nav-purchase-tab">
+        <partial name="Purchase" />
+    </div>
+    <div class="tab-pane fade" id="nav-purchase-return" role="tabpanel" aria-labelledby="nav-purchase-return">
+        <partial name="PurchaseReturn" />
+    </div>
+    <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
+        <partial name="Detail" />
+    </div>
+</div>
+
+@section scripts{
+    @*<script>
+            var GetCategoryURL = '@Url.Action("GetCategory", "Product")';
+            var AddCategoryURL = '@Url.Action("AddCategory", "Product")';
+            var EditCategoryURL = '@Url.Action("EditCategory", "Product")';
+            var DeleteCategoryURL = '@Url.Action("DeleteCategory", "Product")';
+            var GetCategoryItemURL = '@Url.Action("GetCategoryItem", "Product")';
+            var GetProductURL = '@Url.Action("GetProduct", "Product")';
+            var AddProductURL = '@Url.Action("AddProduct", "Product")';
+            var EditProductURL = '@Url.Action("EditProduct", "Product")';
+            var DeleteProductURL = '@Url.Action("DeleteProduct", "Product")';
+            var UploadFileURL = '@Url.Action("UploadFile", "Product")';
+            var UploadImageURL = '@Url.Action("UploadImage", "Product")';
+        </script>
+        <script src="~/controller/CategoryManagement.js"></script>
+        <script src="~/controller/ProductManagement.js"></script>*@
+}

@@ -5,4 +5,12 @@
     <RootNamespace>ERP_Foundation</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NPOI" Version="2.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ERP-DataAccess\ERP-DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

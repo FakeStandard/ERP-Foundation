@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "商品";
+}
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-product-mgt-tab" data-bs-toggle="tab" data-bs-target="#nav-product-mgt" type="button" role="tab" aria-controls="nav-product-mgt" aria-selected="true">商品管理</button>
+        <button class="nav-link" id="nav-category-mgt-tab" data-bs-toggle="tab" data-bs-target="#nav-category-mgt" type="button" role="tab" aria-controls="nav-category-mgt" aria-selected="false">商品分類管理</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-product-mgt" role="tabpanel" aria-labelledby="nav-product-mgt-tab">
+        <partial name="ProductManagement" />
+    </div>
+    <div class="tab-pane fade" id="nav-category-mgt" role="tabpanel" aria-labelledby="nav-category-mgt-tab">
+        <partial name="CategoryManagement" />
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var GetCategoryURL = '@Url.Action("GetCategory", "Product")';
+        var AddCategoryURL = '@Url.Action("AddCategory", "Product")';
+        var EditCategoryURL = '@Url.Action("EditCategory", "Product")';
+        var DeleteCategoryURL = '@Url.Action("DeleteCategory", "Product")';
+        var GetCategoryItemURL = '@Url.Action("GetCategoryItem", "Product")';
+        var GetProductURL = '@Url.Action("GetProduct", "Product")';
+        var AddProductURL = '@Url.Action("AddProduct", "Product")';
+        var EditProductURL = '@Url.Action("EditProduct", "Product")';
+        var DeleteProductURL = '@Url.Action("DeleteProduct", "Product")';
+        var UploadFileURL = '@Url.Action("UploadFile", "Product")';
+        var UploadImageURL = '@Url.Action("UploadImage", "Product")';
+    </script>
+    <script src="~/controller/CategoryManagement.js"></script>
+    <script src="~/controller/ProductManagement.js"></script>
+}

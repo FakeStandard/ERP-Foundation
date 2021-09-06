@@ -1,8 +1,78 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "首頁";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="" id="app">
+    <div class="row row-cols-1 row-cols-md-4 g-4 gy-4">
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="Product" asp-action="Index">
+                    <div class="card-body">
+                        <h5 class="card-title">商品</h5>
+                        <p class="card-text">商品管理/商品分類管理</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="Purchase" asp-action="Index">
+                    <div class="card-body" style="vertical-align:central;">
+                        <h5 class="card-title">進貨</h5>
+                        <p class="card-text">進貨/進貨退回/進退貨明細</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="Sales" asp-action="Index">
+                    <div class="card-body" style="vertical-align:central;">
+                        <h5 class="card-title">銷貨</h5>
+                        <p class="card-text">銷貨/銷貨退回/銷退貨明細</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="Inventory" asp-action="Index">
+                    <div class="card-body" style="vertical-align:central;">
+                        <h5 class="card-title">庫存</h5>
+                        <p class="card-text">出入庫紀錄/庫存調撥</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="Report" asp-action="Index">
+                    <div class="card-body" style="vertical-align:central;">
+                        <h5 class="card-title">統計報表</h5>
+                        <p class="card-text">進貨報表/庫存報表/銷貨報表/各項報表</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="Report" asp-action="Index">
+                    <div class="card-body" style="vertical-align:central;">
+                        <h5 class="card-title">基本資料</h5>
+                        <p class="card-text">廠商資料建置/客戶資料建置/其他資料建置</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow text-dark bg-light h-100">
+                <a class="text-center btn h-100" asp-controller="ShopAffair" asp-action="Index">
+                    <div class="card-body" style="vertical-align:central;">
+                        <h5 class="card-title">店務</h5>
+                        <p class="card-text">班表/例行事項</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
