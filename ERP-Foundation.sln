@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP-Foundation", "ERP-Foundation\ERP-Foundation.csproj", "{AB301107-CDF4-46AE-8752-B21E6169EE04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-Foundation", "ERP-Foundation\ERP-Foundation.csproj", "{AB301107-CDF4-46AE-8752-B21E6169EE04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP-DataAccess", "ERP-DataAccess\ERP-DataAccess.csproj", "{352910DA-B4B9-43F6-A187-97714BB4264F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERP-DataAccess", "ERP-DataAccess\ERP-DataAccess.csproj", "{352910DA-B4B9-43F6-A187-97714BB4264F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

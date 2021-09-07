@@ -18,16 +18,11 @@ namespace ERP_DataAccess
         }
 
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        //                optionsBuilder.UseSqlServer("Data Source=LAPTOP-6V1T1JI2\\MSSQLSERVER2017;Initial Catalog=ERP-Foundation;Integrated Security=True;");
-        //            }
-        //        }
+        public virtual DbSet<Purchase> Purchases { get; set; }
+        public virtual DbSet<PurchaseDetail> PurchaseDetails { get; set; }
+        public virtual DbSet<Vendor> Vendors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,11 +37,85 @@ namespace ERP_DataAccess
                     .HasMaxLength(30);
             });
 
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.ToTable("Customer");
+
+                entity.Property(e => e.Address).HasMaxLength(200);
+
+                entity.Property(e => e.ContactPerson).HasMaxLength(50);
+
+                entity.Property(e => e.ContactTel).HasMaxLength(20);
+
+                entity.Property(e => e.EnglishName).HasMaxLength(100);
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PaymentRule).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Tel)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("Product");
 
                 entity.Property(e => e.Name).HasMaxLength(30);
+            });
+
+            modelBuilder.Entity<Purchase>(entity =>
+            {
+                entity.ToTable("Purchase");
+
+                entity.Property(e => e.OrderNo)
+                    .IsRequired()
+                    .HasMaxLength(20);
+            });
+
+            modelBuilder.Entity<PurchaseDetail>(entity =>
+            {
+                entity.ToTable("PurchaseDetail");
+
+                entity.Property(e => e.ItemNo).HasMaxLength(20);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(30);
+            });
+
+            modelBuilder.Entity<Vendor>(entity =>
+            {
+                entity.ToTable("Vendor");
+
+                entity.Property(e => e.Address).HasMaxLength(200);
+
+                entity.Property(e => e.ContactPerson).HasMaxLength(50);
+
+                entity.Property(e => e.ContactTel)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EnglishName).HasMaxLength(100);
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Tel)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

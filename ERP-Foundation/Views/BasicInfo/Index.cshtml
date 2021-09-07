@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "基本資料";
+}
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-customer-tab" data-bs-toggle="tab" data-bs-target="#nav-customer" type="button" role="tab" aria-controls="nav-customer" aria-selected="true">客戶資料</button>
+        <button class="nav-link" id="nav-vendor-tab" data-bs-toggle="tab" data-bs-target="#nav-vendor" type="button" role="tab" aria-controls="nav-vendor" aria-selected="false">廠商資料</button>
+        <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user" type="button" role="tab" aria-controls="nav-user" aria-selected="false">人員資料</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-customer" role="tabpanel" aria-labelledby="nav-customer-tab">
+        <partial name="Customer" />
+    </div>
+    <div class="tab-pane fade" id="nav-vendor" role="tabpanel" aria-labelledby="nav-vendor-tab">
+        <partial name="Vendor" />
+    </div>
+    <div class="tab-pane fade" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab">
+        <partial name="User" />
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var GetCustomerURL = '@Url.Action("GetCustomer", "BasicInfo")';
+        var AddCustomerURL = '@Url.Action("AddCustomer", "BasicInfo")';
+        var EditCustomerURL = '@Url.Action("EditCustomer", "BasicInfo")';
+        var DeleteCustomerURL = '@Url.Action("DeleteCustomer", "BasicInfo")';
+        var GetVendorURL = '@Url.Action("GetVendor", "BasicInfo")';
+        var AddVendorURL = '@Url.Action("AddVendor", "BasicInfo")';
+        var EditVendorURL = '@Url.Action("EditVendor", "BasicInfo")';
+        var DeleteVendorURL = '@Url.Action("DeleteVendor", "BasicInfo")';
+        var GetUserURL = '@Url.Action("GetUser", "BasicInfo")';
+        var AddUserURL = '@Url.Action("AddUser", "BasicInfo")';
+        var EditUserURL = '@Url.Action("EditUser", "BasicInfo")';
+        var DeleteUserURL = '@Url.Action("DeleteUser", "BasicInfo")';
+    </script>
+    <script src="~/controller/Customer.js"></script>
+    <script src="~/controller/Vendor.js"></script>
+    <script src="~/controller/User.js"></script>
+}

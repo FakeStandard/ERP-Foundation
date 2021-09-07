@@ -1,12 +1,12 @@
 ﻿Vue.config.devtools = true;
 Vue.config.debug = true;
 
-var vm = new Vue({
-    el: '#CategoryApp',
+var vendorVM = new Vue({
+    el: '#vendorApp',
     data: {
         loading: true,
-        // 載入資料
         list: [],
+        searchText: '',
         // 當前頁數
         page: 1,
         // 每頁顯示的筆數
@@ -15,29 +15,42 @@ var vm = new Vue({
         pageTotal: 0,
         // 總筆數
         total: 0,
-        // 搜尋文字
-        searchText: '',
         addForm: {
             name: '',
-            order: ''
+            englishName: '',
+            address: '',
+            tel: '',
+            fax: '',
+            contactPerson: '',
+            contactTel: '',
+            paymentRule: ''
         },
         editForm: {
             id: '',
             name: '',
-            order: ''
+            englishName: '',
+            address: '',
+            tel: '',
+            fax: '',
+            contactPerson: '',
+            contactTel: '',
+            paymentRule: ''
         },
         // 欄位顯示開關
         NAME: true,
-        ORDER: true,
+        CONTACTPERSON: true,
+        ADDRESS: true,
         // 欄位排序
-        sortNAME: null,
-        sortORDER: null
+        //sortNAME: null,
+        //sortCONTACTPERSON: null,
+        //sortADDRESS: null
     },
     methods: {
         getData: function () {
             this.loading = true;
+
             $.ajax({
-                url: GetCategoryURL,
+                url: GetVendorURL,
                 data: {
                     Page: this.page,
                     PageSize: this.pageSize,
@@ -45,44 +58,53 @@ var vm = new Vue({
                 },
                 type: 'GET',
                 success: function (res) {
-                    this.pageTotal = res.PageTotal
-                    this.Total = res.Total
-                    vm.$data.list = res.data
+                    vendorVM.$data.list = res.data;
                 },
-                error: function (error) {
-                    console.log(error);
+                error: function (err) {
+                    console.log(err);
                 },
                 complete: function () {
-                    vm.$data.loading = false;
+                    vendorVM.$data.loading = false;
                 }
             });
         },
-        searchClick: function () {
-            vm.$data.list = []
+        searchClick() {
             this.getData();
         },
-        showAddDialogClick: function () {
+        showAddDialogClick() {
             this.$data.addForm = {
                 name: '',
-                order: ''
+                englishName: '',
+                address: '',
+                tel: '',
+                fax: '',
+                contactPerson: '',
+                contactTel: '',
+                paymentRule: ''
             }
 
-            $('#AddModal').modal('show');
+            $('#AddVendorModal').modal('show');
         },
-        showEditDialogClick: function (obj) {
-            $('#EditModal').modal('show');
-
+        showEditDialogClick(item) {
             this.$data.editForm = {
-                id: obj.id,
-                name: obj.name,
-                order: obj.order
+                id: item.id,
+                name: item.name,
+                englishName: item.englishName,
+                address: item.address,
+                tel: item.tel,
+                fax: item.fax,
+                contactPerson: item.contactPerson,
+                contactTel: item.contactTel,
+                paymentRule: item.paymentRule
             }
+
+            $('#EditVendorModal').modal('show');
         },
-        addData: function () {
-            $('#AddModal').modal('hide');
+        addData() {
+            $('#AddVendorModal').modal('hide');
 
             $.ajax({
-                url: AddCategoryURL,
+                url: AddVendorURL,
                 data: this.$data.addForm,
                 type: 'POST',
                 success: function (res) {
@@ -92,41 +114,37 @@ var vm = new Vue({
                         showConfirmButton: false,
                         timer: 1000
                     }).catch(swal.noop)
-                    vm.getData();
+
+                    vendorVM.getData();
                 },
                 error: function (err) {
                     console.log(err);
-                },
-                complete: function () {
-                    productVM.getCategoryData();
                 }
             });
         },
-        editData: function () {
-            $('#EditModal').modal('hide');
+        editData() {
+            $('#EditVendorModal').modal('hide');
 
             $.ajax({
-                url: EditCategoryURL,
+                url: EditVendorURL,
                 data: this.$data.editForm,
                 type: 'POST',
-                success: function (res) {
+                success: function () {
                     swal({
-                        title: '儲存成功！',
+                        title: "儲存成功！",
                         type: 'success',
                         showConfirmButton: false,
                         timer: 1000
                     }).catch(swal.noop)
-                    vm.getData();
+
+                    vendorVM.getData();
                 },
                 error: function (err) {
                     console.log(err);
-                },
-                complete: function () {
-                    productVM.getCategoryData();
                 }
             });
         },
-        deleteDataClick: function (id) {
+        deleteDataClick(id) {
             swal({
                 title: '確定要刪除？',
                 text: '刪除後將無法恢復！',
@@ -138,7 +156,7 @@ var vm = new Vue({
             }).then((confirm) => {
                 if (confirm) {
                     $.ajax({
-                        url: DeleteCategoryURL + '/' + id,
+                        url: DeleteVendorURL + '/' + id,
                         type: 'POST',
                         success: function () {
                             swal({
@@ -159,17 +177,12 @@ var vm = new Vue({
                             })
                         },
                         complete: function () {
-                            vm.getData();
-                            productVM.getCategoryData();
+                            vendorVM.getData();
                         }
                     });
+
                 }
             })
-        },
-        filterSort: function (column) {
-            if (column === 'NAME') {
-                // do something...
-            }
         }
     },
     mounted: function () {

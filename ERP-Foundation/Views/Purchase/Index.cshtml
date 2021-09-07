@@ -17,7 +17,7 @@
         <partial name="PurchaseReturn" />
     </div>
     <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
-        <partial name="Detail" />
+        <partial name="PurchaseDetail" />
     </div>
 </div>
 
@@ -34,7 +34,9 @@
             var DeleteProductURL = '@Url.Action("DeleteProduct", "Product")';
             var UploadFileURL = '@Url.Action("UploadFile", "Product")';
             var UploadImageURL = '@Url.Action("UploadImage", "Product")';
-        </script>
-        <script src="~/controller/CategoryManagement.js"></script>
-        <script src="~/controller/ProductManagement.js"></script>*@
+        </script>*@
+
+    <script src="~/controller/Purchase.js"></script>
+    <script src="~/controller/PurchaseReturn.js"></script>
+    <script src="~/controller/PurchaseDetail.js"></script>
 }

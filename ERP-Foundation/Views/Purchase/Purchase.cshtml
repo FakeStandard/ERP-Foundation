@@ -1,39 +1,170 @@
 ﻿
-<div id="app" class="pt-3">
+<div id="purchaseApp" class="pt-3">
     <div class="container-fluid">
         <div class="card shadow px-4 py-4">
-            <form>
+            <div class="row align-self-end">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" @@click="editData">
+                        <i class="bi bi-save"></i>&nbsp;儲存進貨單
+                    </button>
+                </div>
+            </div>
+            <form class="pt-4">
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">單號</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" />
+                    </div>
+                    <label class="col-sm-2 col-form-label">廠商</label>
+                    <div class="col-sm-4">
                         <input type="text" class="form-control" />
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">付款方式</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" />
+                    </div>
+                    <label class="col-sm-2 col-form-label">付款狀態</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">進貨人員</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" disabled />
+                    </div>
+                    <label class="col-sm-2 col-form-label">建立時間</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" disabled />
+                    </div>
+                </div>
             </form>
+
+            <div class="row pt-2">
+                <div class="col">
+                    <button class="btn btn-outline-primary shadow" @@click="showAddDialogClick">
+                        <i class="bi bi-plus-lg"></i>&nbsp;新增品項
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th>品號</th>
+                            <th>品名</th>
+                            <th>數量</th>
+                            <th>價格</th>
+                            <th>小計</th>
+                            <th>備註</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @*<tr v-for="(item, index) in list">
+                                <td>{{index+1}}</td>
+                                <td v-show="NAME">{{item.name}}</td>
+                                <td v-show="CATEGORY">{{item.category}}</td>
+                                <td v-show="PRICE">{{item.price}}</td>
+                                <td v-show="IMAGE">
+                                    <img :src="item.path" width="150" />
+                                </td>
+                                <td style="max-width:150px;text-align:center;">
+                                    <button class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="照片上傳" @@click="showUploadImageDialogClick(item.id, item.name)">
+                                        <i class="bi bi-images"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="編輯" @@click="showEditDialogClick(item)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="刪除" @@click="deleteDataClick(item.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>*@
+                    </tbody>
+                    <tbody v-show="loading">
+                        <tr>
+                            <td colspan="8" style="text-align:center">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border spinner-border-sm text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="!loading && list.length==0">
+                        <tr>
+                            <td colspan="8" style="text-align:center">尚未添加任何資料</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <!--Add Dialog-->
-    <div class="modal fade" id="AddModal" aria-hidden="true">
+    <div class="modal fade" id="AddPurchaseModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">新增商品分類作業</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">新增品項作業</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label>商品分類名稱</label>
-                        <input class="form-control" v-model="addForm.name" required />
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">品號</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-modal="addForm.itemNo" />
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label>排序</label>
-                        <input class="form-control" v-model="addForm.order" />
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">品名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-modal="addForm.name" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">數量</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-modal="addForm.quantity" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">價格</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="text" class="form-control" v-model="addForm.price" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">小計</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="text" class="form-control" v-model="addForm.subTotal" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">備註</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-modal="addForm.remark" />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" @@click="addData">
-                        <i class="bi bi-save"></i>&nbsp;新增
+                        <i class="bi bi-save"></i>&nbsp;新增並關閉
+                    </button>
+                    <button type="button" class="btn btn-primary" @@click="addAgainData">
+                        <i class="bi bi-save"></i>&nbsp;繼續新增
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x"></i>&nbsp;取消
@@ -44,21 +175,30 @@
     </div>
 
     <!--Edit Dialog-->
-    <div class="modal fade" id="EditModal" aria-hidden="true">
+    <div class="modal fade" id="EditPurchaseModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">編輯商品分類作業</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">編輯商品作業</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>商品分類名稱</label>
+                        <label>品名</label>
                         <input class="form-control" v-model="editForm.name" required />
                     </div>
                     <div class="mb-3">
-                        <label>排序</label>
-                        <input class="form-control" v-model="editForm.order" />
+                        <label>分類</label>
+                        <select class="form-select" v-model="editForm.category">
+                            <option v-for="item in categoryItem" :value="item.key">{{item.value}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>價格</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" v-model="editForm.price" />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\ERP-DataAccess\ERP-DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
+
 </Project>
