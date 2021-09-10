@@ -67,7 +67,7 @@
                         <tr v-for="(item, index) in list">
                             <td>{{index+1}}</td>
                             <td v-show="NAME">{{ item.name }}</td>
-                            <td v-show="NAME">{{ item.parentName }}</td>
+                            <td v-show="PARENTNAME">{{ item.parentName }}</td>
                             <td style="max-width:100px;text-align:center">
                                 <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="編輯" @@click="showEditDialogClick(item)">
                                     <i class="bi bi-pencil-square"></i>
