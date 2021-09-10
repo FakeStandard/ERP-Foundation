@@ -15,16 +15,19 @@
                     </button>
                 </div>
             </div>
-            @*<div>
-                    <p class="pt-2">
-                        <button class="btn btn-outline-dark btn-sm" v-show="!NAME" @@click="NAME=!NAME">
-                            部門名稱
-                        </button>
-                        <button class="btn btn-outline-dark btn-sm" v-show="!PARENTNAME" @@click="PARENTNAME=!PARENTNAME">
-                            隸屬單位
-                        </button>
-                    </p>
-                </div>*@
+            <div>
+                <p class="pt-2">
+                    <button class="btn btn-outline-dark btn-sm" v-show="!NAME" @@click="NAME=!NAME">
+                        職位名稱
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!DEPARTMENTNAME" @@click="DEPARTMENTNAME=!DEPARTMENTNAME">
+                        部門
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!UNITNAME" @@click="UNITNAME=!UNITNAME">
+                        隸屬單位
+                    </button>
+                </p>
+            </div>
             <div class="pt-2">
                 <table class="table table-hover table-bordered">
                     <thead class="table-secondary">
