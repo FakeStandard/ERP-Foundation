@@ -7,6 +7,8 @@
         <button class="nav-link active" id="nav-customer-tab" data-bs-toggle="tab" data-bs-target="#nav-customer" type="button" role="tab" aria-controls="nav-customer" aria-selected="true">客戶資料</button>
         <button class="nav-link" id="nav-vendor-tab" data-bs-toggle="tab" data-bs-target="#nav-vendor" type="button" role="tab" aria-controls="nav-vendor" aria-selected="false">廠商資料</button>
         <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user" type="button" role="tab" aria-controls="nav-user" aria-selected="false">人員資料</button>
+        <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-department" type="button" role="tab" aria-controls="nav-department" aria-selected="false">部門管理</button>
+        <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-title" type="button" role="tab" aria-controls="nav-title" aria-selected="false">職位管理</button>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -18,6 +20,12 @@
     </div>
     <div class="tab-pane fade" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab">
         <partial name="User" />
+    </div>
+    <div class="tab-pane fade" id="nav-department" role="tabpanel" aria-labelledby="nav-department-tab">
+        <partial name="Department" />
+    </div>
+    <div class="tab-pane fade" id="nav-title" role="tabpanel" aria-labelledby="nav-title-tab">
+        <partial name="Title" />
     </div>
 </div>
 
@@ -34,9 +42,21 @@
         var GetUserURL = '@Url.Action("GetUser", "BasicInfo")';
         var AddUserURL = '@Url.Action("AddUser", "BasicInfo")';
         var EditUserURL = '@Url.Action("EditUser", "BasicInfo")';
-        var DeleteUserURL = '@Url.Action("DeleteUser", "BasicInfo")';
+        var GetDepartmentURL = '@Url.Action("GetDepartment", "BasicInfo")';
+        var GetDepartmentItemURL = '@Url.Action("GetDepartmentItem", "BasicInfo")';
+        var AddDepartmentURL = '@Url.Action("AddDepartment", "BasicInfo")';
+        var EditDepartmentURL = '@Url.Action("EditDepartment", "BasicInfo")';
+        var DeleteDepartmentURL = '@Url.Action("DeleteDepartment", "BasicInfo")';
+        var GetTitleURL = '@Url.Action("GetTitle", "BasicInfo")';
+        var AddTitleURL = '@Url.Action("AddTitle", "BasicInfo")';
+        var EditTitleURL = '@Url.Action("EditTitle", "BasicInfo")';
+        var DeleteTitleURL = '@Url.Action("DeleteTitle", "BasicInfo")';
+        var GetDepartmentParentItemURL = '@Url.Action("GetDepartmentParentItem", "BasicInfo")';
+        var GetUnitItemURL = '@Url.Action("GetUnitItem", "BasicInfo")';
     </script>
-    <script src="~/controller/Customer.js"></script>
-    <script src="~/controller/Vendor.js"></script>
-    <script src="~/controller/User.js"></script>
+    <script src="~/controller/BasicInfo/Customer.js"></script>
+    <script src="~/controller/BasicInfo/Vendor.js"></script>
+    <script src="~/controller/BasicInfo/User.js"></script>
+    <script src="~/controller/BasicInfo/Department.js"></script>
+    <script src="~/controller/BasicInfo/Title.js"></script>
 }

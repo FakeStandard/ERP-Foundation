@@ -27,6 +27,15 @@ namespace ERP_Foundation
             services.AddControllersWithViews();
 
             services.AddDbContext<ERP_DataAccess.ERPFoundationContext>(options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
+
+            // 使用內存記憶體紀錄 Session, DI 注入
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = "WebSession";
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +57,9 @@ namespace ERP_Foundation
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // 加入 Session 的 pipe line
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

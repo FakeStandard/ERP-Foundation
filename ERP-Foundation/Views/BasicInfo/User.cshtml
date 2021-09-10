@@ -1,2 +1,327 @@
 ﻿
-<p>User</p>
+<div id="userApp" class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow px-4 py-4">
+            <div class="row justify-content-between">
+                <div class="col">
+                    <button class="btn btn-outline-primary shadow" @@click="showAddDialogClick">
+                        <i class="bi bi-plus-lg"></i>&nbsp;建立新人員
+                    </button>
+                </div>
+                <div class="d-flex col-lg-4 col-md-6 col-sm-8 col-xs-12">
+                    <input class="form-control me-2 shadow" type="search" placeholder="Search" aria-label="Search" v-model="searchText" @@keyup.enter="searchClick">
+                    <button class="btn btn-outline-secondary shadow" @@click="searchClick">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <p class="pt-2">
+                    <button class="btn btn-outline-dark btn-sm" v-show="!NAME" @@click="NAME=!NAME">
+                        人員名稱
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!ENGLISHNAME" @@click="ENGLISHNAME=!ENGLISHNAME">
+                        英文名稱
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!DEPARTMENT" @@click="DEPARTMENT=!DEPARTMENT">
+                        部門
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!TITLE" @@click="TITLE=!TITLE">
+                        職稱
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!TEL" @@click="TEL=!TEL">
+                        聯絡方式
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm" v-show="!STATUS" @@click="STATUS=!STATUS">
+                        狀態
+                    </button>
+                </p>
+                </div>
+            <div class="pt-2">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th v-show="NAME">
+                                人員名稱
+                                @*<a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==null">
+                                        <i class="fa fa-sort"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==false">
+                                        <i class="bi bi-sort-down-alt"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==true">
+                                        <i class="bi bi-sort-down"></i>
+                                    </a>*@
+                                <a href="#?" class="link-secondary float-end" v-on:click="NAME=!NAME">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="ENGLISHNAME">
+                                英文名稱
+                                @*<a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==null">
+                                        <i class="fa fa-sort"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==false">
+                                        <i class="bi bi-sort-down-alt"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('NAME')" v-show="sortNAME==true">
+                                        <i class="bi bi-sort-down"></i>
+                                    </a>*@
+                                <a href="#?" class="link-secondary float-end" v-on:click="ENGLISHNAME=!ENGLISHNAME">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="DEPARTMENT">
+                                部門
+                                @*<a href="#?" class="link-secondary" @@click="filterSort('CONTACTPERSON')" v-show="sortCONTACTPERSON==null">
+                                        <i class="fa fa-sort"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('CONTACTPERSON')" v-show="sortCONTACTPERSON==false">
+                                        <i class="bi bi-sort-down-alt"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('CONTACTPERSON')" v-show="sortCONTACTPERSON==true">
+                                        <i class="bi bi-sort-down"></i>
+                                    </a>*@
+                                <a href="#?" class="link-secondary float-end" v-on:click="DEPARTMENT=!DEPARTMENT">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="TITLE">
+                                職稱
+                                @*<a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==null">
+                                        <i class="fa fa-sort"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==false">
+                                        <i class="bi bi-sort-down-alt"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==true">
+                                        <i class="bi bi-sort-down"></i>
+                                    </a>*@
+                                <a href="#?" class="link-secondary float-end" v-on:click="TITLE=!TITLE">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="TEL">
+                                聯絡方式
+                                @*<a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==null">
+                                        <i class="fa fa-sort"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==false">
+                                        <i class="bi bi-sort-down-alt"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==true">
+                                        <i class="bi bi-sort-down"></i>
+                                    </a>*@
+                                <a href="#?" class="link-secondary float-end" v-on:click="TEL=!TEL">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+                            <th v-show="STATUS">
+                                狀態
+                                @*<a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==null">
+                                        <i class="fa fa-sort"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==false">
+                                        <i class="bi bi-sort-down-alt"></i>
+                                    </a>
+                                    <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==true">
+                                        <i class="bi bi-sort-down"></i>
+                                    </a>*@
+                                <a href="#?" class="link-secondary float-end" v-on:click="STATUS=!STATUS">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in list">
+                            <td>{{index+1}}</td>
+                            <td v-show="NAME">{{ item.name }}</td>
+                            <td v-show="ENGLISHNAME">{{ item.englishName }}</td>
+                            <td v-show="DEPARTMENT">{{ item.department }}</td>
+                            <td v-show="TITLE">{{ item.title }}</td>
+                            <td v-show="TEL">{{ item.tel }}</td>
+                            <td v-show="STATUS">{{ item.status }}</td>
+                            <td style="max-width:100px;text-align:center">
+                                <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="編輯" @@click="showEditDialogClick(item)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="loading">
+                        <tr>
+                            <td colspan="8" style="text-align:center">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border spinner-border-sm text-info" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-show="!loading && list.length==0">
+                        <tr>
+                            <td colspan="8" style="text-align:center">目前尚無資料</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Add Dialog-->
+    <div class="modal fade" id="AddUserModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">建立人員資料作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">人員名稱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.name" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">英文名稱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.englishName" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">部門</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.department" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">職稱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.title" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">聯絡方式</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.tel" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">通訊地址</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.address" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">聯絡人</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.contactPerson" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">聯絡人電話</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.contactTel" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">狀態</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="addForm.status" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="addData">
+                        <i class="bi bi-save"></i>&nbsp;新增
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Dialog-->
+    <div class="modal fade" id="EditUserModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">修改人員資料作業</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">人員名稱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.name" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">英文名稱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.englishName" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">部門</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.department" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">職稱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.title" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">聯絡方式</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.tel" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">通訊地址</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.address" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">聯絡人</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.contactPerson" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">聯絡人電話</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.contactTel" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">狀態</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="editForm.status" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @@click="editData">
+                        <i class="bi bi-save"></i>&nbsp;儲存
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
