@@ -33,7 +33,7 @@ namespace ERP_Foundation
             services.AddSession(options =>
             {
                 options.Cookie.Name = "WebSession";
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.IsEssential = true;
             });
         }
@@ -65,7 +65,7 @@ namespace ERP_Foundation
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=INdex}/{id?}");
             });
         }
     }

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@using ERP_Foundation.Infrastructure.Helpers;
+@using ERP_DataAccess;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -15,12 +19,20 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color:#4d9bb1;font-family:'微軟正黑體';font-weight:bold;">
             <div class="container justify-content-between">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ERP_Foundation</a>
-                <label>@Users.Name</label>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Foundation</a>
+                <div>
+                    <label class="col-form-label">
+                        @{
+                            var u = SessionHelper.GetObjectFromJson<User>(Context.Session, "user");
+                        }
+                        @u.Name (@u.EnglishName)
+                    </label>
+                    <a class="btn btn-outline-danger" asp-controller="Account" asp-action="Logout">Logout</a>
+                </div>
                 @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>*@
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>*@
             </div>
         </nav>
     </header>

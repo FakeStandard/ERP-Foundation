@@ -5,14 +5,11 @@ using System.Collections.Generic;
 
 namespace ERP_DataAccess
 {
-    public partial class Category
+    public partial class Position
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int? ParentID { get; set; }
-        public byte Level { get; set; }
-        public int Order { get; set; }
-        public DateTime? CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
         public int AddedBy { get; set; }
         public DateTime? UpdateTime { get; set; }
         public int? Modifier { get; set; }

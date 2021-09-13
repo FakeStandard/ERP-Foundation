@@ -7,8 +7,9 @@
         <button class="nav-link active" id="nav-customer-tab" data-bs-toggle="tab" data-bs-target="#nav-customer" type="button" role="tab" aria-controls="nav-customer" aria-selected="true">客戶資料</button>
         <button class="nav-link" id="nav-vendor-tab" data-bs-toggle="tab" data-bs-target="#nav-vendor" type="button" role="tab" aria-controls="nav-vendor" aria-selected="false">廠商資料</button>
         <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user" type="button" role="tab" aria-controls="nav-user" aria-selected="false">人員資料</button>
-        <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-department" type="button" role="tab" aria-controls="nav-department" aria-selected="false">部門管理</button>
-        <button class="nav-link" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-title" type="button" role="tab" aria-controls="nav-title" aria-selected="false">職位管理</button>
+        <button class="nav-link" id="nav-department-tab" data-bs-toggle="tab" data-bs-target="#nav-department" type="button" role="tab" aria-controls="nav-department" aria-selected="false">部門管理</button>
+        @*<button class="nav-link" id="nav-title-tab" data-bs-toggle="tab" data-bs-target="#nav-title" type="button" role="tab" aria-controls="nav-title" aria-selected="false">職位管理</button>*@
+        <button class="nav-link" id="nav-position-tab" data-bs-toggle="tab" data-bs-target="#nav-position" type="button" role="tab" aria-controls="nav-position" aria-selected="false">職位管理</button>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -24,8 +25,11 @@
     <div class="tab-pane fade" id="nav-department" role="tabpanel" aria-labelledby="nav-department-tab">
         <partial name="Department" />
     </div>
-    <div class="tab-pane fade" id="nav-title" role="tabpanel" aria-labelledby="nav-title-tab">
-        <partial name="Title" />
+    @*<div class="tab-pane fade" id="nav-title" role="tabpanel" aria-labelledby="nav-title-tab">
+            <partial name="Title" />
+        </div>*@
+    <div class="tab-pane fade" id="nav-position" role="tabpanel" aria-labelledby="nav-position-tab">
+        <partial name="Position" />
     </div>
 </div>
 
@@ -47,16 +51,21 @@
         var AddDepartmentURL = '@Url.Action("AddDepartment", "BasicInfo")';
         var EditDepartmentURL = '@Url.Action("EditDepartment", "BasicInfo")';
         var DeleteDepartmentURL = '@Url.Action("DeleteDepartment", "BasicInfo")';
-        var GetTitleURL = '@Url.Action("GetTitle", "BasicInfo")';
+        @*var GetTitleURL = '@Url.Action("GetTitle", "BasicInfo")';
         var AddTitleURL = '@Url.Action("AddTitle", "BasicInfo")';
         var EditTitleURL = '@Url.Action("EditTitle", "BasicInfo")';
         var DeleteTitleURL = '@Url.Action("DeleteTitle", "BasicInfo")';
         var GetDepartmentParentItemURL = '@Url.Action("GetDepartmentParentItem", "BasicInfo")';
-        var GetUnitItemURL = '@Url.Action("GetUnitItem", "BasicInfo")';
+        var GetUnitItemURL = '@Url.Action("GetUnitItem", "BasicInfo")';*@
+        var GetPositionURL = '@Url.Action("GetPosition", "BasicInfo")';
+        var AddPositionURL = '@Url.Action("AddPosition", "BasicInfo")';
+        var EditPositionURL = '@Url.Action("EditPosition", "BasicInfo")';
+        var DeletePositionURL = '@Url.Action("DeletePosition", "BasicInfo")';
     </script>
     <script src="~/controller/BasicInfo/Customer.js"></script>
     <script src="~/controller/BasicInfo/Vendor.js"></script>
     <script src="~/controller/BasicInfo/User.js"></script>
     <script src="~/controller/BasicInfo/Department.js"></script>
-    <script src="~/controller/BasicInfo/Title.js"></script>
+    @*<script src="~/controller/BasicInfo/Title.js"></script>*@
+    <script src="~/controller/BasicInfo/Position.js"></script>
 }

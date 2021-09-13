@@ -1,7 +1,9 @@
 ﻿using ERP_DataAccess;
+using ERP_Foundation.Infrastructure.Helpers;
 using ERP_Foundation.Models.DTO;
 using ERP_Foundation.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace ERP_Foundation.Controllers
     public class BasicInfoController : Controller
     {
         private ERPFoundationContext _context;
-
+        private static User _user;
         public BasicInfoController(ERPFoundationContext context)
         {
             _context = context;
@@ -21,8 +23,12 @@ namespace ERP_Foundation.Controllers
 
         public IActionResult Index()
         {
+            _user = SessionHelper.GetObjectFromJson<User>(HttpContext.Session, "user");
+
             return View();
         }
+
+        #region 客戶
 
         [HttpGet]
         public IActionResult GetCustomer(int Page, int PageSize, string SearchText)
@@ -100,7 +106,7 @@ namespace ERP_Foundation.Controllers
                         ContactTel = contactTel,
                         PaymentRule = paymentRule,
                         CreateTime = DateTime.Now,
-                        AddedBy = 0
+                        AddedBy = _user.ID
                     });
 
                 _context.SaveChanges();
@@ -134,7 +140,7 @@ namespace ERP_Foundation.Controllers
                     obj.ContactTel = contactTel;
                     obj.PaymentRule = paymentRule;
                     obj.UpdateTime = DateTime.Now;
-                    obj.Modifier = 1;
+                    obj.Modifier = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -163,7 +169,7 @@ namespace ERP_Foundation.Controllers
                 {
                     obj.Deleted = true;
                     obj.DeleteTime = DateTime.Now;
-                    obj.DeletedBy = 1;
+                    obj.DeletedBy = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -179,6 +185,10 @@ namespace ERP_Foundation.Controllers
                 return Json(ex.Message);
             }
         }
+
+        #endregion
+
+        #region 廠商
 
         [HttpGet]
         public IActionResult GetVendor(int Page, int PageSize, string SearchText)
@@ -256,7 +266,7 @@ namespace ERP_Foundation.Controllers
                         ContactTel = contactTel,
                         PaymentRule = paymentRule,
                         CreateTime = DateTime.Now,
-                        AddedBy = 0
+                        AddedBy = _user.ID
                     });
 
                 _context.SaveChanges();
@@ -290,7 +300,7 @@ namespace ERP_Foundation.Controllers
                     obj.ContactTel = contactTel;
                     obj.PaymentRule = paymentRule;
                     obj.UpdateTime = DateTime.Now;
-                    obj.Modifier = 1;
+                    obj.Modifier = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -319,7 +329,7 @@ namespace ERP_Foundation.Controllers
                 {
                     obj.Deleted = true;
                     obj.DeleteTime = DateTime.Now;
-                    obj.DeletedBy = 1;
+                    obj.DeletedBy = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -336,6 +346,10 @@ namespace ERP_Foundation.Controllers
             }
         }
 
+        #endregion
+
+        #region 人員
+
         [HttpGet]
         public IActionResult GetUser(int Page, int PageSize, string SearchText)
         {
@@ -345,38 +359,42 @@ namespace ERP_Foundation.Controllers
 
                 if (string.IsNullOrWhiteSpace(SearchText))
                 {
-                    data = _context.Users.Select(
-                    c => new UserVM()
-                    {
-                        ID = c.ID,
-                        Name = c.Name,
-                        EnglishName = c.EnglishName,
-                        Department = c.Department,
-                        Title = c.Title,
-                        Tel = c.Tel,
-                        Address = c.Address,
-                        ContactPerson = c.ContactPerson,
-                        ContactTel = c.ContactTel,
-                        Status = c.Status
-                    }).ToList();
+                    data = (from c in _context.Users
+                            join s in _context.Titles on c.Title equals s.ID
+                            join x in _context.Statuses on c.Status equals x.ID
+                            select new UserVM()
+                            {
+                                ID = c.ID,
+                                Name = c.Name,
+                                EnglishName = c.EnglishName,
+                                Department = c.Department,
+                                Title = s.Name,
+                                Tel = c.Tel,
+                                Address = c.Address,
+                                ContactPerson = c.ContactPerson,
+                                ContactTel = c.ContactTel,
+                                Status = x.Name
+                            }).ToList();
                 }
                 else
                 {
-                    data = _context.Users.Where(
-                        c => c.Name.ToUpper().Contains(SearchText.ToUpper()) || c.EnglishName.ToUpper().Contains(SearchText)).Select(
-                        c => new UserVM()
-                        {
-                            ID = c.ID,
-                            Name = c.Name,
-                            EnglishName = c.EnglishName,
-                            Department = c.Department,
-                            Title = c.Title,
-                            Tel = c.Tel,
-                            Address = c.Address,
-                            ContactPerson = c.ContactPerson,
-                            ContactTel = c.ContactTel,
-                            Status = c.Status
-                        }).ToList();
+                    data = (from c in _context.Users
+                            where c.Name.ToUpper().Contains(SearchText.ToUpper()) || c.EnglishName.ToUpper().Contains(SearchText.ToUpper())
+                            join s in _context.Titles on c.Title equals s.ID
+                            join x in _context.Statuses on c.Status equals x.ID
+                            select new UserVM()
+                            {
+                                ID = c.ID,
+                                Name = c.Name,
+                                EnglishName = c.EnglishName,
+                                Department = c.Department,
+                                Title = s.Name,
+                                Tel = c.Tel,
+                                Address = c.Address,
+                                ContactPerson = c.ContactPerson,
+                                ContactTel = c.ContactTel,
+                                Status = x.Name
+                            }).ToList();
                 }
 
                 int total = data.Count();
@@ -415,7 +433,7 @@ namespace ERP_Foundation.Controllers
                         ContactTel = contactTel,
                         Status = status,
                         CreateTime = DateTime.Now,
-                        AddedBy = 0
+                        AddedBy = _user.ID
                     });
 
                 _context.SaveChanges();
@@ -450,7 +468,7 @@ namespace ERP_Foundation.Controllers
                     obj.ContactTel = contactTel;
                     obj.Status = status;
                     obj.UpdateTime = DateTime.Now;
-                    obj.Modifier = 1;
+                    obj.Modifier = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -466,6 +484,10 @@ namespace ERP_Foundation.Controllers
                 return Json(ex.Message);
             }
         }
+
+        #endregion
+
+        #region 部門
 
         [HttpGet]
         public IActionResult GetDepartment(int Page, int PageSize, string SearchText)
@@ -541,7 +563,7 @@ namespace ERP_Foundation.Controllers
                         Name = name,
                         ParentID = parentID,
                         CreateTime = DateTime.Now,
-                        AddedBy = 0
+                        AddedBy = _user.ID
                     });
 
                 _context.SaveChanges();
@@ -569,7 +591,7 @@ namespace ERP_Foundation.Controllers
                     obj.Name = name;
                     obj.ParentID = parentID;
                     obj.UpdateTime = DateTime.Now;
-                    obj.Modifier = 1;
+                    obj.Modifier = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -598,7 +620,7 @@ namespace ERP_Foundation.Controllers
                 {
                     obj.Deleted = true;
                     obj.DeleteTime = DateTime.Now;
-                    obj.DeletedBy = 1;
+                    obj.DeletedBy = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -615,63 +637,227 @@ namespace ERP_Foundation.Controllers
             }
         }
 
+        #endregion
+
+        #region 職位(舊)
+        //[HttpGet]
+        //public IActionResult GetTitle(int Page, int PageSize, string SearchText)
+        //{
+        //    try
+        //    {
+        //        List<TitleVM> data;
+
+        //        if (string.IsNullOrWhiteSpace(SearchText))
+        //        {
+        //            data = _context.Titles.Where(c => c.Deleted == false)
+        //                .Join(_context.Departments.Where(m => m.ParentID == 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
+        //                {
+        //                    ID = c.ID,
+        //                    Name = c.Name,
+        //                    DepartmentName = x.Name,
+        //                    UnitName = _context.Departments.Where(y => x.ParentID == y.ID).Select(y => y.Name).FirstOrDefault()
+        //                }).ToList();
+
+        //            var unit = _context.Titles.Where(c => c.Deleted == false)
+        //                .Join(_context.Departments.Where(m => m.ParentID != 0 && m.ParentID != 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
+        //                {
+        //                    ID = c.ID,
+        //                    Name = c.Name,
+        //                    DepartmentName = _context.Departments.Where(y => y.ID == x.ParentID).Select(y => y.Name).FirstOrDefault(),
+        //                    UnitName = x.Name,
+        //                }).ToList();
+
+        //            data.AddRange(unit);
+        //            data = data.OrderBy(c => c.ID).ToList();
+        //        }
+        //        else
+        //        {
+        //            data = _context.Titles.Where(c => c.Deleted == false)
+        //                .Join(_context.Departments.Where(m => m.ParentID == 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
+        //                {
+        //                    ID = c.ID,
+        //                    Name = c.Name,
+        //                    DepartmentName = x.Name,
+        //                    UnitName = _context.Departments.Where(y => x.ParentID == y.ID).Select(y => y.Name).FirstOrDefault()
+        //                }).Where(z => z.Name.ToUpper().Contains(SearchText) || z.DepartmentName.ToUpper().Contains(SearchText)).ToList();
+
+        //            var unit = _context.Titles.Where(c => c.Deleted == false)
+        //                .Join(_context.Departments.Where(m => m.ParentID != 0 && m.ParentID != 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
+        //                {
+        //                    ID = c.ID,
+        //                    Name = c.Name,
+        //                    DepartmentName = _context.Departments.Where(y => y.ID == x.ParentID).Select(y => y.Name).FirstOrDefault(),
+        //                    UnitName = x.Name,
+        //                }).Where(z => z.Name.ToUpper().Contains(SearchText) || z.DepartmentName.ToUpper().Contains(SearchText)).ToList();
+
+        //            data.AddRange(unit);
+        //            data = data.OrderBy(c => c.ID).ToList();
+        //        }
+
+        //        int total = data.Count();
+
+        //        return Json(new TitleDTO()
+        //        {
+        //            Page = Page,
+        //            PageSize = PageSize,
+        //            Total = total,
+        //            Data = data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        return Json(ex.Message);
+        //    }
+        //}
+
+        //[HttpGet]
+        //public IActionResult GetDepartmentParentItem()
+        //{
+        //    try
+        //    {
+        //        List<DepartmentItemVM> data;
+
+        //        data = _context.Departments.Where(c => c.Deleted == false && c.ParentID == 1)
+        //            .Select(c => new DepartmentItemVM()
+        //            {
+        //                key = c.ID,
+        //                value = c.Name,
+        //                units = _context.Departments.Where(s => s.ParentID == c.ID || s.ID == 1).Select(
+        //                    s => new DepartmentItemVM()
+        //                    {
+        //                        key = s.ID,
+        //                        value = s.Name
+        //                    }).ToList()
+        //            }).ToList();
+
+        //        return Json(data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        return Json(ex.Message);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public IActionResult AddTitle(
+        //    string name, int departmentID, int unitID)
+        //{
+        //    try
+        //    {
+        //        _context.Titles.Add(
+        //            new Title()
+        //            {
+        //                Name = name,
+        //                DepartmentID = unitID == 1 ? departmentID : unitID,
+        //                CreateTime = DateTime.Now,
+        //                AddedBy = 0
+        //            });
+
+        //        _context.SaveChanges();
+
+        //        return Json("OK");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        return Json(ex.Message);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public IActionResult EditTitle(
+        //    int id, string name, int departmentID, int unitID)
+        //{
+        //    try
+        //    {
+        //        var obj = _context.Titles.Where(c => c.ID == id).FirstOrDefault();
+        //        bool b = _context.Titles.Contains(obj);
+
+        //        if (b)
+        //        {
+        //            obj.Name = name;
+        //            obj.DepartmentID = unitID == 1 ? departmentID : unitID;
+        //            obj.UpdateTime = DateTime.Now;
+        //            obj.Modifier = 1;
+
+        //            _context.Entry(obj).State = EntityState.Modified;
+        //            _context.SaveChanges();
+
+        //            return Json(true);
+        //        }
+        //        else
+        //            return Json(false);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        return Json(ex.Message);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public IActionResult DeleteTitle(int id)
+        //{
+        //    try
+        //    {
+        //        var obj = _context.Titles.Where(c => c.ID == id).FirstOrDefault();
+        //        var b = _context.Titles.Contains(obj);
+
+        //        if (b)
+        //        {
+        //            obj.Deleted = true;
+        //            obj.DeleteTime = DateTime.Now;
+        //            obj.DeletedBy = 1;
+
+        //            _context.Entry(obj).State = EntityState.Modified;
+        //            _context.SaveChanges();
+
+        //            return Json(true);
+        //        }
+        //        else
+        //            return Json(false);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        return Json(ex.Message);
+        //    }
+        //}
+        #endregion
+
+        #region 職位(新)
         [HttpGet]
-        public IActionResult GetTitle(int Page, int PageSize, string SearchText)
+        public IActionResult GetPosition(int Page, int PageSize, string SearchText)
         {
             try
             {
-                List<TitleVM> data;
+                List<PositionVM> data;
 
                 if (string.IsNullOrWhiteSpace(SearchText))
                 {
-                    data = _context.Titles.Where(c => c.Deleted == false)
-                        .Join(_context.Departments.Where(m => m.ParentID == 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
+                    data = _context.Positions.Where(c => c.Deleted == false)
+                        .Select(c => new PositionVM()
                         {
                             ID = c.ID,
-                            Name = c.Name,
-                            DepartmentName = x.Name,
-                            UnitName = _context.Departments.Where(y => x.ParentID == y.ID).Select(y => y.Name).FirstOrDefault()
+                            Name = c.Name
                         }).ToList();
-
-                    var unit = _context.Titles.Where(c => c.Deleted == false)
-                        .Join(_context.Departments.Where(m => m.ParentID != 0 && m.ParentID != 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
-                        {
-                            ID = c.ID,
-                            Name = c.Name,
-                            DepartmentName = _context.Departments.Where(y => y.ID == x.ParentID).Select(y => y.Name).FirstOrDefault(),
-                            UnitName = x.Name,
-                        }).ToList();
-
-                    data.AddRange(unit);
-                    data = data.OrderBy(c => c.ID).ToList();
                 }
                 else
                 {
-                    data = _context.Titles.Where(c => c.Deleted == false)
-                        .Join(_context.Departments.Where(m => m.ParentID == 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
+                    data = _context.Positions.Where(
+                        c => c.Deleted == false && c.Name.ToUpper().Contains(SearchText.ToUpper()))
+                        .Select(c => new PositionVM()
                         {
                             ID = c.ID,
-                            Name = c.Name,
-                            DepartmentName = x.Name,
-                            UnitName = _context.Departments.Where(y => x.ParentID == y.ID).Select(y => y.Name).FirstOrDefault()
-                        }).Where(z => z.Name.ToUpper().Contains(SearchText) || z.DepartmentName.ToUpper().Contains(SearchText)).ToList();
-
-                    var unit = _context.Titles.Where(c => c.Deleted == false)
-                        .Join(_context.Departments.Where(m => m.ParentID != 0 && m.ParentID != 1), c => c.DepartmentID, x => x.ID, (c, x) => new TitleVM()
-                        {
-                            ID = c.ID,
-                            Name = c.Name,
-                            DepartmentName = _context.Departments.Where(y => y.ID == x.ParentID).Select(y => y.Name).FirstOrDefault(),
-                            UnitName = x.Name,
-                        }).Where(z => z.Name.ToUpper().Contains(SearchText) || z.DepartmentName.ToUpper().Contains(SearchText)).ToList();
-
-                    data.AddRange(unit);
-                    data = data.OrderBy(c => c.ID).ToList();
+                            Name = c.Name
+                        }).ToList();
                 }
 
                 int total = data.Count();
 
-                return Json(new TitleDTO()
+                return Json(new PositionDTO()
                 {
                     Page = Page,
                     PageSize = PageSize,
@@ -686,48 +872,17 @@ namespace ERP_Foundation.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult GetDepartmentParentItem()
-        {
-            try
-            {
-                List<DepartmentItemVM> data;
-
-                data = _context.Departments.Where(c => c.Deleted == false && c.ParentID == 1)
-                    .Select(c => new DepartmentItemVM()
-                    {
-                        key = c.ID,
-                        value = c.Name,
-                        units = _context.Departments.Where(s => s.ParentID == c.ID || s.ID == 1).Select(
-                            s => new DepartmentItemVM()
-                            {
-                                key = s.ID,
-                                value = s.Name
-                            }).ToList()
-                    }).ToList();
-
-                return Json(data);
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(ex.Message);
-            }
-        }
-
         [HttpPost]
-        public IActionResult AddTitle(
-            string name, int departmentID, int unitID)
+        public IActionResult AddPosition(string name)
         {
             try
             {
-                _context.Titles.Add(
-                    new Title()
+                _context.Positions.Add(
+                    new Position()
                     {
                         Name = name,
-                        DepartmentID = unitID == 1 ? departmentID : unitID,
                         CreateTime = DateTime.Now,
-                        AddedBy = 0
+                        AddedBy = _user.ID
                     });
 
                 _context.SaveChanges();
@@ -742,20 +897,18 @@ namespace ERP_Foundation.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditTitle(
-            int id, string name, int departmentID, int unitID)
+        public IActionResult EditPosition(int id, string name)
         {
             try
             {
-                var obj = _context.Titles.Where(c => c.ID == id).FirstOrDefault();
-                bool b = _context.Titles.Contains(obj);
+                var obj = _context.Positions.Where(c => c.ID == id).FirstOrDefault();
+                bool b = _context.Positions.Contains(obj);
 
                 if (b)
                 {
                     obj.Name = name;
-                    obj.DepartmentID = unitID == 1 ? departmentID : unitID;
                     obj.UpdateTime = DateTime.Now;
-                    obj.Modifier = 1;
+                    obj.Modifier = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -773,18 +926,18 @@ namespace ERP_Foundation.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteTitle(int id)
+        public IActionResult DeletePosition(int id)
         {
             try
             {
-                var obj = _context.Titles.Where(c => c.ID == id).FirstOrDefault();
-                var b = _context.Titles.Contains(obj);
+                var obj = _context.Positions.Where(c => c.ID == id).FirstOrDefault();
+                var b = _context.Positions.Contains(obj);
 
                 if (b)
                 {
                     obj.Deleted = true;
                     obj.DeleteTime = DateTime.Now;
-                    obj.DeletedBy = 1;
+                    obj.DeletedBy = _user.ID;
 
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
@@ -800,5 +953,6 @@ namespace ERP_Foundation.Controllers
                 return Json(ex.Message);
             }
         }
+        #endregion
     }
 }

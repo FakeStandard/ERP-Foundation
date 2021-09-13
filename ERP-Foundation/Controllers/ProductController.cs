@@ -23,6 +23,7 @@ namespace ERP_Foundation.Controllers
 
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
+        private User _user;
         public ProductController(ERPFoundationContext context, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
@@ -34,6 +35,8 @@ namespace ERP_Foundation.Controllers
         {
             return View();
         }
+
+        #region 產品分類
 
         [HttpGet]
         public JsonResult GetCategory(int Page, int PageSize, string SearchText)
@@ -86,7 +89,8 @@ namespace ERP_Foundation.Controllers
                         ParentID = 0,
                         Level = 0,
                         Order = order,
-                        Deleted = false
+                        CreateTime = DateTime.Now,
+                        AddedBy = _user.ID
                     });
                 _context.SaveChanges();
 
@@ -111,6 +115,8 @@ namespace ERP_Foundation.Controllers
                 {
                     obj.Name = name;
                     obj.Order = order;
+                    obj.UpdateTime = DateTime.Now;
+                    obj.Modifier = _user.ID;
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
 
@@ -137,6 +143,8 @@ namespace ERP_Foundation.Controllers
                 if (b)
                 {
                     obj.Deleted = true;
+                    obj.DeleteTime = DateTime.Now;
+                    obj.DeletedBy = _user.ID;
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
 
@@ -151,6 +159,10 @@ namespace ERP_Foundation.Controllers
                 return Json(ex.Message);
             }
         }
+
+        #endregion
+
+        #region 產品
 
         [HttpGet]
         public IActionResult GetCategoryItem()
@@ -244,7 +256,8 @@ namespace ERP_Foundation.Controllers
                         Name = name,
                         CategoryID = category,
                         Price = price,
-                        CreateTime = DateTime.Now
+                        CreateTime = DateTime.Now,
+                        AddedBy = _user.ID
                     });
 
                 _context.SaveChanges();
@@ -272,6 +285,7 @@ namespace ERP_Foundation.Controllers
                     obj.CategoryID = category;
                     obj.Price = price;
                     obj.UpdateTime = DateTime.Now;
+                    obj.Modifier = _user.ID;
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
 
@@ -299,6 +313,7 @@ namespace ERP_Foundation.Controllers
                 {
                     obj.Deleted = true;
                     obj.DeleteTime = DateTime.Now;
+                    obj.DeletedBy = _user.ID;
                     _context.Entry(obj).State = EntityState.Modified;
                     _context.SaveChanges();
 
@@ -433,5 +448,7 @@ namespace ERP_Foundation.Controllers
                 return Json(ex.Message);
             }
         }
+
+        #endregion
     }
 }

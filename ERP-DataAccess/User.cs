@@ -8,9 +8,12 @@ namespace ERP_DataAccess
     public partial class User
     {
         public int ID { get; set; }
+        public string Account { get; set; }
+        public string Password { get; set; }
         public string Name { get; set; }
         public string EnglishName { get; set; }
         public int Department { get; set; }
+        public int Unit { get; set; }
         public int Title { get; set; }
         public string Tel { get; set; }
         public string Address { get; set; }

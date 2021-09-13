@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap-5.1.0-dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+<body class="login_container">
+    <div class="row login_box shadow-lg">
+        <!--logo-->
+        @*<div class="avater_box">
+                <img src="~/image/logo.png" />
+            </div>*@
+        <!--login form-->
+        <form method="post" class="login_form" asp-controller="account" asp-action="login">
+            <div class="row mb-3">
+                <label class="col-form-label" style="color:red;font:bold;">@ViewBag.error</label>
+            </div>
+            <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Account</label>
+                <div class="col-sm-9">
+                    <input type="text" name="account" class="form-control" placeholder="Please enter your account."/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-form-label col-sm-3">Password</label>
+                <div class="col-sm-9">
+                    <input type="password" name="password" class="form-control" placeholder="Please enter your password."/>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-end">
+                <input type="submit" class="btn btn-info col-sm-3 m-1" value="Confirm" />
+            </div>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap-5.1.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap-5.1.0-dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
