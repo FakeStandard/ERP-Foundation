@@ -22,10 +22,10 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Foundation</a>
                 <div>
                     <label class="col-form-label">
-                        @{
+                        @*@{
                             var u = SessionHelper.GetObjectFromJson<User>(Context.Session, "user");
                         }
-                        @u.Name (@u.EnglishName)
+                        @u.Name (@u.EnglishName)*@
                     </label>
                     <a class="btn btn-outline-danger" asp-controller="Account" asp-action="Logout">Logout</a>
                 </div>

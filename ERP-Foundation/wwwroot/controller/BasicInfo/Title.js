@@ -78,7 +78,8 @@ var titleVM = new Vue({
         showAddDialogClick() {
             this.$data.addForm = {
                 name: '',
-                departmentID: ''
+                departmentID: '',
+                unitID: ''
             }
 
             titleVM.$data.addForm.departmentID = this.departmentItem[0].key;

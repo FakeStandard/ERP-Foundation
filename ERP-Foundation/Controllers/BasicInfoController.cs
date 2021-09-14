@@ -84,7 +84,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -116,7 +116,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -153,7 +153,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -182,7 +182,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -244,7 +244,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -276,7 +276,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -313,7 +313,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -342,7 +342,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -360,15 +360,19 @@ namespace ERP_Foundation.Controllers
                 if (string.IsNullOrWhiteSpace(SearchText))
                 {
                     data = (from c in _context.Users
-                            join s in _context.Titles on c.Title equals s.ID
+                            join s in _context.Positions on c.Position equals s.ID
                             join x in _context.Statuses on c.Status equals x.ID
+                            join y in _context.Departments on c.Department equals y.ID
+                            join z in _context.Departments on c.Unit equals z.ID
                             select new UserVM()
                             {
                                 ID = c.ID,
+                                Account = c.Account,
                                 Name = c.Name,
                                 EnglishName = c.EnglishName,
-                                Department = c.Department,
-                                Title = s.Name,
+                                Department = y.Name,
+                                Unit = z.Name,
+                                Position = s.Name,
                                 Tel = c.Tel,
                                 Address = c.Address,
                                 ContactPerson = c.ContactPerson,
@@ -380,15 +384,19 @@ namespace ERP_Foundation.Controllers
                 {
                     data = (from c in _context.Users
                             where c.Name.ToUpper().Contains(SearchText.ToUpper()) || c.EnglishName.ToUpper().Contains(SearchText.ToUpper())
-                            join s in _context.Titles on c.Title equals s.ID
+                            join s in _context.Positions on c.Position equals s.ID
                             join x in _context.Statuses on c.Status equals x.ID
+                            join y in _context.Departments on c.Department equals y.ID
+                            join z in _context.Departments on c.Unit equals z.ID
                             select new UserVM()
                             {
                                 ID = c.ID,
+                                Account = c.Account,
                                 Name = c.Name,
                                 EnglishName = c.EnglishName,
-                                Department = c.Department,
-                                Title = s.Name,
+                                Department = y.Name,
+                                Unit = z.Name,
+                                Position = s.Name,
                                 Tel = c.Tel,
                                 Address = c.Address,
                                 ContactPerson = c.ContactPerson,
@@ -410,23 +418,43 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
+        }
+
+        [HttpGet]
+        public IActionResult GetStatusItem()
+        {
+            var data = _context.Statuses.ToList();
+
+            return Json(data);
+        }
+
+        [HttpGet]
+        public IActionResult GetPositionItem()
+        {
+            var data = _context.Positions.Select(c => new { c.ID, c.Name }).ToList();
+
+            return Json(data);
         }
 
         [HttpPost]
         public IActionResult AddUser(
-            string name, string englishName, int department, int title, string tel, string address, string fax, string contactPerson, string contactTel, int status)
+            string account, string name, string englishName, int department, int unit, int position, string tel, string address, string contactPerson, string contactTel, int status)
         {
             try
             {
                 _context.Users.Add(
                     new User()
                     {
+                        Account = account,
+                        // password 要Hash
+                        Password = "1234",
                         Name = name,
                         EnglishName = englishName,
                         Department = department,
-                        Title = title,
+                        Unit = unit,
+                        Position = position,
                         Tel = tel,
                         Address = address,
                         ContactPerson = contactPerson,
@@ -443,13 +471,13 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
         [HttpPost]
         public IActionResult EditUser(
-            int id, string name, string englishName, int department, int title, string tel, string address, string fax, string contactPerson, string contactTel, int status)
+            int id, string name, string englishName, int department, int unit, int position, string tel, string address, string contactPerson, string contactTel, int status)
         {
             try
             {
@@ -461,7 +489,8 @@ namespace ERP_Foundation.Controllers
                     obj.Name = name;
                     obj.EnglishName = englishName;
                     obj.Department = department;
-                    obj.Title = title;
+                    obj.Unit = unit;
+                    obj.Position = position;
                     obj.Tel = tel;
                     obj.Address = address;
                     obj.ContactPerson = contactPerson;
@@ -481,7 +510,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -530,7 +559,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -539,21 +568,22 @@ namespace ERP_Foundation.Controllers
         {
             try
             {
-                List<DepartmentItemVM> data = _context.Departments.Select(
-                    c => new DepartmentItemVM { key = c.ID, value = c.Name }).ToList();
+                List<DepartmentItemVM> data = _context.Departments
+                    .Where(c => c.ParentID == 0 || c.ParentID == 1 && c.Deleted == false)
+                    .Select(c => new DepartmentItemVM { key = c.ID, value = c.Name }).ToList();
 
                 return Json(data);
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
         [HttpPost]
         public IActionResult AddDepartment(
-            string name, string englishName, int parentID)
+            string name, int parentID)
         {
             try
             {
@@ -573,7 +603,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -604,7 +634,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -633,7 +663,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -707,38 +737,38 @@ namespace ERP_Foundation.Controllers
         //    catch (Exception ex)
         //    {
         //        Response.StatusCode = 500;
-        //        return Json(ex.Message);
+        //        return Json(ex.InnerException.Message);
         //    }
         //}
 
-        //[HttpGet]
-        //public IActionResult GetDepartmentParentItem()
-        //{
-        //    try
-        //    {
-        //        List<DepartmentItemVM> data;
+        [HttpGet]
+        public IActionResult GetDepartmentParentItem()
+        {
+            try
+            {
+                List<DepartmentItemVM> data;
 
-        //        data = _context.Departments.Where(c => c.Deleted == false && c.ParentID == 1)
-        //            .Select(c => new DepartmentItemVM()
-        //            {
-        //                key = c.ID,
-        //                value = c.Name,
-        //                units = _context.Departments.Where(s => s.ParentID == c.ID || s.ID == 1).Select(
-        //                    s => new DepartmentItemVM()
-        //                    {
-        //                        key = s.ID,
-        //                        value = s.Name
-        //                    }).ToList()
-        //            }).ToList();
+                data = _context.Departments.Where(c => c.Deleted == false && c.ParentID == 1)
+                    .Select(c => new DepartmentItemVM()
+                    {
+                        key = c.ID,
+                        value = c.Name,
+                        units = _context.Departments.Where(s => s.ParentID == c.ID || s.ID == 1).Select(
+                            s => new DepartmentItemVM()
+                            {
+                                key = s.ID,
+                                value = s.Name
+                            }).ToList()
+                    }).ToList();
 
-        //        return Json(data);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.StatusCode = 500;
-        //        return Json(ex.Message);
-        //    }
-        //}
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(ex.InnerException.Message);
+            }
+        }
 
         //[HttpPost]
         //public IActionResult AddTitle(
@@ -762,7 +792,7 @@ namespace ERP_Foundation.Controllers
         //    catch (Exception ex)
         //    {
         //        Response.StatusCode = 500;
-        //        return Json(ex.Message);
+        //        return Json(ex.InnerException.Message);
         //    }
         //}
 
@@ -793,7 +823,7 @@ namespace ERP_Foundation.Controllers
         //    catch (Exception ex)
         //    {
         //        Response.StatusCode = 500;
-        //        return Json(ex.Message);
+        //        return Json(ex.InnerException.Message);
         //    }
         //}
 
@@ -822,7 +852,7 @@ namespace ERP_Foundation.Controllers
         //    catch (Exception ex)
         //    {
         //        Response.StatusCode = 500;
-        //        return Json(ex.Message);
+        //        return Json(ex.InnerException.Message);
         //    }
         //}
         #endregion
@@ -868,7 +898,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -892,7 +922,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -921,7 +951,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -950,7 +980,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
         #endregion

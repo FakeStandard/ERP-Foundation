@@ -73,7 +73,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -99,7 +99,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -128,7 +128,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -156,7 +156,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -182,7 +182,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -241,7 +241,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -267,7 +267,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -297,7 +297,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -325,7 +325,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -400,8 +400,8 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                //return Content(ex.Message, "application/json", Encoding.Unicode);
-                return Json(ex.Message);
+                //return Content(ex.InnerException.Message, "application/json", Encoding.Unicode);
+                return Json(ex.InnerException.Message);
             }
         }
 
@@ -445,7 +445,7 @@ namespace ERP_Foundation.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message);
+                return Json(ex.InnerException.Message);
             }
         }
 

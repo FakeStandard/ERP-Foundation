@@ -33,7 +33,7 @@ namespace ERP_Foundation
             services.AddSession(options =>
             {
                 options.Cookie.Name = "WebSession";
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                //options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.IsEssential = true;
             });
         }

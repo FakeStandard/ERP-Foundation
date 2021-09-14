@@ -26,7 +26,7 @@
                     <button class="btn btn-outline-dark btn-sm" v-show="!DEPARTMENT" @@click="DEPARTMENT=!DEPARTMENT">
                         部門
                     </button>
-                    <button class="btn btn-outline-dark btn-sm" v-show="!TITLE" @@click="TITLE=!TITLE">
+                    <button class="btn btn-outline-dark btn-sm" v-show="!POSITION" @@click="POSITION=!POSITION">
                         職稱
                     </button>
                     <button class="btn btn-outline-dark btn-sm" v-show="!TEL" @@click="TEL=!TEL">
@@ -36,7 +36,7 @@
                         狀態
                     </button>
                 </p>
-                </div>
+            </div>
             <div class="pt-2">
                 <table class="table table-hover table-bordered">
                     <thead class="table-secondary">
@@ -87,7 +87,7 @@
                                     <i class="bi bi-x"></i>
                                 </a>
                             </th>
-                            <th v-show="TITLE">
+                            <th v-show="POSITION">
                                 職稱
                                 @*<a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==null">
                                         <i class="fa fa-sort"></i>
@@ -98,7 +98,7 @@
                                     <a href="#?" class="link-secondary" @@click="filterSort('ADDRESS')" v-show="sortADDRESS==true">
                                         <i class="bi bi-sort-down"></i>
                                     </a>*@
-                                <a href="#?" class="link-secondary float-end" v-on:click="TITLE=!TITLE">
+                                <a href="#?" class="link-secondary float-end" v-on:click="POSITION=!POSITION">
                                     <i class="bi bi-x"></i>
                                 </a>
                             </th>
@@ -141,8 +141,8 @@
                             <td>{{index+1}}</td>
                             <td v-show="NAME">{{ item.name }}</td>
                             <td v-show="ENGLISHNAME">{{ item.englishName }}</td>
-                            <td v-show="DEPARTMENT">{{ item.department }}</td>
-                            <td v-show="TITLE">{{ item.title }}</td>
+                            <td v-show="DEPARTMENT">{{ item.department }}({{item.unit}})</td>
+                            <td v-show="POSITION">{{ item.position }}</td>
                             <td v-show="TEL">{{ item.tel }}</td>
                             <td v-show="STATUS">{{ item.status }}</td>
                             <td style="max-width:100px;text-align:center">
@@ -195,15 +195,34 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">部門</label>
+                        <label class="col-sm-3 col-form-label">帳號</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="addForm.department" />
+                            <input type="text" class="form-control" v-model="addForm.account"/>
+                            <label style="color:red;">密碼預設為 1234</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">部門</label>
+                        <div class="col-sm-9 form-inline">
+                            <select class="form-select" v-model="addForm.department" v-on:change="departmentAddChange($event)">
+                                <option v-for="item in departmentItem" :value="item.key">{{item.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-inline">
+                            <select class="form-select" v-model="addForm.unit">
+                                <option v-for="item in unitItem" :value="item.key">{{item.value}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">職稱</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="addForm.title" />
+                            <select class="form-select" v-model="addForm.position">
+                                <option v-for="item in positionItem" :value="item.id">{{item.name}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -233,7 +252,9 @@
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">狀態</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="addForm.status" />
+                            <select class="form-select" v-model="addForm.status">
+                                <option v-for="item in statusItem" :value="item.id">{{item.name}}</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -271,15 +292,33 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">部門</label>
+                        <label class="col-sm-3 col-form-label">帳號</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="editForm.department" />
+                            <input type="text" class="form-control" v-model="editForm.account" disabled/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">部門</label>
+                        <div class="col-sm-9 form-inline">
+                            <select class="form-select" v-model="editForm.department" v-on:change="departmentEditChange($event)">
+                                <option v-for="item in departmentItem" :value="item.key">{{item.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-inline">
+                            <select class="form-select" v-model="editForm.unit">
+                                <option v-for="item in unitItem" :value="item.key">{{item.value}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">職稱</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="editForm.title" />
+                            <select class="form-select" v-model="editForm.position">
+                                <option v-for="item in positionItem" :value="item.id">{{item.name}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -309,7 +348,9 @@
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label">狀態</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="editForm.status" />
+                            <select class="form-select" v-model="editForm.status">
+                                <option v-for="item in statusItem" :value="item.id">{{item.name}}</option>
+                            </select>
                         </div>
                     </div>
                 </div>

@@ -113,6 +113,8 @@ var departmentVM = new Vue({
                     }).catch(swal.noop)
 
                     departmentVM.getData();
+                    departmentVM.getDepartmentItem();
+                    userVM.getDepartmentItem();
                 },
                 error: function (err) {
                     console.log(err);
@@ -135,6 +137,8 @@ var departmentVM = new Vue({
                     }).catch(swal.noop)
 
                     departmentVM.getData();
+                    departmentVM.getDepartmentItem();
+                    userVM.getDepartmentItem();
                 },
                 error: function (err) {
                     console.log(err);

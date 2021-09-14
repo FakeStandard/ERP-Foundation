@@ -14,7 +14,7 @@ namespace ERP_DataAccess
         public string EnglishName { get; set; }
         public int Department { get; set; }
         public int Unit { get; set; }
-        public int Title { get; set; }
+        public int Position { get; set; }
         public string Tel { get; set; }
         public string Address { get; set; }
         public string ContactPerson { get; set; }
